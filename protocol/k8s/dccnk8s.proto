@@ -18,25 +18,98 @@ package k8s;
 
 // The k8s service definition.
 service dccnk8s {
-  rpc K8Task(stream K8SMessage)returns (stream Task) {} // k8s task stream
+  rpc NewTask(NewTaskRequest)returns (NewTaskResponce) {}
+  rpc UpdateTask(UpdateTaskRequest)returns (UpdateTaskResponce) {}
+  rpc CancelTask(CancelTaskRequest)returns (CancelTaskResponce) {}
+  rpc HeartBeat(HeartBeatRequest)returns (HeartBeatResponce) {}
 }
 
-message Task{
-    string Type = 1;  //"NewTask"  "CancelTask"  "UpdateTask"
-    int64 taskid = 2;  //id of task
-    string taskType = 3; // default or "web"
-    string name = 4;  // UniqueName of the task as taskid
-    string image = 5; // name of docker image
-    int64 replica = 6;
-    string extra = 7; //extra for other arguments
+message Empty{}
+message CommonRequest{
+}
+message CommonResponce{
 }
 
-message K8SMessage{
-    string Type = 1;  //"HeartBeat"  "Task"
-    int64 taskid = 2;  // id of task
-    string taskname = 3;  // UniqueName of task
-    string status = 4; // StartSuccess or StartFailure  JobDone Cancelled  Running  Other
-    string datacenter = 5; // name of datacenter
-    string url = 6;  // url of web application
-    string report = 7;
+message NewTaskRequest{
+    CommonRequest common = 1;
+    string Type = 2;  //"NewTask"  "CancelTask"  "UpdateTask"
+    int64 taskid = 3;  //id of task
+    string taskType = 4; // default or "web"
+    string name = 5;  // UniqueName of the task as taskid
+    string image = 6; // name of docker image
+    int64 replica = 7;
+    string extra = 8; //extra for other arguments
+}
+message NewTaskResponce{
+    CommonResponce common = 1;
+    string Type = 2;  //"HeartBeat"  "Task"
+    int64 taskid = 3;  // id of task
+    string taskname = 4;  // UniqueName of task
+    string status = 5; // StartSuccess or StartFailure  JobDone Cancelled  Running  Other
+    string datacenter = 6; // name of datacenter
+    string url = 7;  // url of web application
+    string report = 8;
+}
+
+message UpdateTaskRequest{
+    CommonRequest common = 1;
+    string Type = 2;  //"NewTask"  "CancelTask"  "UpdateTask"
+    int64 taskid = 3;  //id of task
+    string taskType = 4; // default or "web"
+    string name = 5;  // UniqueName of the task as taskid
+    string image = 6; // name of docker image
+    int64 replica = 7;
+    string extra = 8; //extra for other arguments
+}
+message UpdateTaskResponce{
+    CommonResponce common = 1;
+    string Type = 2;  //"HeartBeat"  "Task"
+    int64 taskid = 3;  // id of task
+    string taskname = 4;  // UniqueName of task
+    string status = 5; // StartSuccess or StartFailure  JobDone Cancelled  Running  Other
+    string datacenter = 6; // name of datacenter
+    string url = 7;  // url of web application
+    string report = 8;
+}
+
+message CancelTaskRequest{
+    CommonRequest common = 1;
+    string Type = 2;  //"NewTask"  "CancelTask"  "UpdateTask"
+    int64 taskid = 3;  //id of task
+    string taskType = 4; // default or "web"
+    string name = 5;  // UniqueName of the task as taskid
+    string image = 6; // name of docker image
+    int64 replica = 7;
+    string extra = 8; //extra for other arguments
+}
+message CancelTaskResponce{
+    CommonResponce common = 1;
+    string Type = 2;  //"HeartBeat"  "Task"
+    int64 taskid = 3;  // id of task
+    string taskname = 4;  // UniqueName of task
+    string status = 5; // StartSuccess or StartFailure  JobDone Cancelled  Running  Other
+    string datacenter = 6; // name of datacenter
+    string url = 7;  // url of web application
+    string report = 8;
+}
+
+message HeartBeatRequest{
+    CommonRequest common = 1;
+    string Type = 2;  //"NewTask"  "CancelTask"  "UpdateTask"
+    int64 taskid = 3;  //id of task
+    string taskType = 4; // default or "web"
+    string name = 5;  // UniqueName of the task as taskid
+    string image = 6; // name of docker image
+    int64 replica = 7;
+    string extra = 8; //extra for other arguments
+}
+message HeartBeatResponce{
+    CommonResponce common = 1;
+    string Type = 2;  //"HeartBeat"  "Task"
+    int64 taskid = 3;  // id of task
+    string taskname = 4;  // UniqueName of task
+    string status = 5; // StartSuccess or StartFailure  JobDone Cancelled  Running  Other
+    string datacenter = 6; // name of datacenter
+    string url = 7;  // url of web application
+    string report = 8;
 }

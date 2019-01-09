@@ -26,6 +26,7 @@ service dccncli {
   rpc PurgeTask (PurgeTaskRequest) returns (PurgeTaskResponse) {}
   rpc UpdateTask (UpdateTaskRequest) returns (UpdateTaskResponse) {}
   rpc TaskDetail (TaskDetailRequest) returns (TaskDetailResponse) {}
+  rpc Auth (AuthRequest) returns (AuthResponse) {}
 }
 
 
@@ -130,4 +131,19 @@ message TaskDetailResponse{
      string body = 1;
      TaskInfo taskinfo = 2;
      string reason = 3;
+}
+
+message AuthRequest{
+
+  int64 timestamp = 1;
+  int64 pubkeyX = 2;
+  int64 pubkeyY = 3;
+  int64 signatureR = 4;
+  int64 signatureS = 5;
+
+}
+
+message AuthResponse{
+  string usertoken = 1;
+  bool success = 2;
 }

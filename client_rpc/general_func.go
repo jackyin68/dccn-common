@@ -13,12 +13,16 @@ import (
 func Connect(address_1 string) (*grpc.ClientConn, error) {
 	return grpc.Dial(address_1, grpc.WithInsecure())
 }
-func AddTaskRequest_util(Usertoken1 string, Name1 string, Type1 string, Datacenter1 string) pb.AddTaskRequest {
+func AddTaskRequest_util(Usertoken1 string, Name1 string, Type1 string, Datacenter1 string, Replica1 string) pb.AddTaskRequest {
 	datacenter, err := strconv.ParseInt(Datacenter1, 10, 64)
+	replica, err1 := strconv.ParseInt(Replica1, 10, 64)
 	if err != nil {
-		log.Fatalf("Client: cannot cover %v", err)
+		log.Fatalf("Client: datacenter cannot cover %v", err)
 		}
-	return pb.AddTaskRequest{Name: Name1, Type: Type1, Datacenterid: int64(datacenter), Usertoken: Usertoken1}
+	if err1 != nil {
+		log.Fatalf("Client: replica cannot cover %v", err)
+		}
+	return pb.AddTaskRequest{Name: Name1, Type: Type1, Datacenterid: int64(datacenter), Usertoken: Usertoken1, Replica: replica}
 }
 
 func TaskListRequest_util(Usertoken1 string) pb.TaskListRequest {

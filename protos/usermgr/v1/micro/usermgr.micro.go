@@ -12,6 +12,9 @@ It has these top-level messages:
 	LoginRequest
 	LoginResponse
 	LogoutRequest
+	AskResetPasswordRequest
+	ResetPasswordRequest
+	ActivateRequest
 	Token
 	NewTokenResponse
 */
@@ -54,6 +57,12 @@ type UserMgrService interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...client.CallOption) (*LoginResponse, error)
 	// Logout need verify permission
 	Logout(ctx context.Context, in *LogoutRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// AskResetPassword, reset password
+	AskResetPassword(ctx context.Context, in *AskResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// ResetPassword, reset password
+	ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// Active, active user with identifying code to finish register
+	Activate(ctx context.Context, in *ActivateRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// Auth  validates user
 	NewToken(ctx context.Context, in *User, opts ...client.CallOption) (*NewTokenResponse, error)
 	// VerifyToken validated token
@@ -112,6 +121,36 @@ func (c *userMgrService) Logout(ctx context.Context, in *LogoutRequest, opts ...
 	return out, nil
 }
 
+func (c *userMgrService) AskResetPassword(ctx context.Context, in *AskResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.AskResetPassword", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMgrService) ResetPassword(ctx context.Context, in *ResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.ResetPassword", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMgrService) Activate(ctx context.Context, in *ActivateRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.Activate", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userMgrService) NewToken(ctx context.Context, in *User, opts ...client.CallOption) (*NewTokenResponse, error) {
 	req := c.c.NewRequest(c.name, "UserMgr.NewToken", in)
 	out := new(NewTokenResponse)
@@ -161,6 +200,12 @@ type UserMgrHandler interface {
 	Login(context.Context, *LoginRequest, *LoginResponse) error
 	// Logout need verify permission
 	Logout(context.Context, *LogoutRequest, *common_proto.Error) error
+	// AskResetPassword, reset password
+	AskResetPassword(context.Context, *AskResetPasswordRequest, *common_proto.Error) error
+	// ResetPassword, reset password
+	ResetPassword(context.Context, *ResetPasswordRequest, *common_proto.Error) error
+	// Active, active user with identifying code to finish register
+	Activate(context.Context, *ActivateRequest, *common_proto.Error) error
 	// Auth  validates user
 	NewToken(context.Context, *User, *NewTokenResponse) error
 	// VerifyToken validated token
@@ -176,6 +221,9 @@ func RegisterUserMgrHandler(s server.Server, hdlr UserMgrHandler, opts ...server
 		Register(ctx context.Context, in *User, out *common_proto.Error) error
 		Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error
 		Logout(ctx context.Context, in *LogoutRequest, out *common_proto.Error) error
+		AskResetPassword(ctx context.Context, in *AskResetPasswordRequest, out *common_proto.Error) error
+		ResetPassword(ctx context.Context, in *ResetPasswordRequest, out *common_proto.Error) error
+		Activate(ctx context.Context, in *ActivateRequest, out *common_proto.Error) error
 		NewToken(ctx context.Context, in *User, out *NewTokenResponse) error
 		VerifyToken(ctx context.Context, in *Token, out *common_proto.Error) error
 		VerifyAndRefreshToken(ctx context.Context, in *Token, out *common_proto.Error) error
@@ -202,6 +250,18 @@ func (h *userMgrHandler) Login(ctx context.Context, in *LoginRequest, out *Login
 
 func (h *userMgrHandler) Logout(ctx context.Context, in *LogoutRequest, out *common_proto.Error) error {
 	return h.UserMgrHandler.Logout(ctx, in, out)
+}
+
+func (h *userMgrHandler) AskResetPassword(ctx context.Context, in *AskResetPasswordRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.AskResetPassword(ctx, in, out)
+}
+
+func (h *userMgrHandler) ResetPassword(ctx context.Context, in *ResetPasswordRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.ResetPassword(ctx, in, out)
+}
+
+func (h *userMgrHandler) Activate(ctx context.Context, in *ActivateRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.Activate(ctx, in, out)
 }
 
 func (h *userMgrHandler) NewToken(ctx context.Context, in *User, out *NewTokenResponse) error {

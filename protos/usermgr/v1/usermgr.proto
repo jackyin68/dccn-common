@@ -15,6 +15,15 @@ service UserMgr {
     // Logout need verify permission
     rpc Logout(LogoutRequest) returns (common.proto.Error) {
     }
+    // AskResetPassword, reset password
+    rpc AskResetPassword(AskResetPasswordRequest) returns (common.proto.Error) {
+    }
+    // ResetPassword, reset password
+    rpc ResetPassword(ResetPasswordRequest) returns (common.proto.Error) {
+    }
+    // Active, active user with identifying code to finish register
+    rpc Activate(ActivateRequest) returns (common.proto.Error) {
+    }
     // Auth  validates user
     rpc NewToken(User) returns (NewTokenResponse) {
     }
@@ -46,6 +55,8 @@ message User {
     bool is_deleted = 8;
     // token jwt token string
     string token = 9;
+    // is_activation register if confirmed
+    bool is_activation = 10;
 }
 
 message LoginRequest {
@@ -61,6 +72,20 @@ message LoginResponse {
 
 message LogoutRequest {
     string user_id = 1;
+}
+
+message AskResetPasswordRequest{
+    string email = 1;
+}
+
+message ResetPasswordRequest{
+    string email = 1;
+    string password = 2;
+    string token = 3;
+}
+
+message ActivateRequest{
+    string token = 1;
 }
 
 message Token {

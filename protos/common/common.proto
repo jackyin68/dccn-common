@@ -104,7 +104,6 @@ message Event {
 
 // Mail Event For the future
 message MailEvent {
-    string name = 1;
-    string address = 2;
-    string message = 3;
+    string to_address = 1;
+    string body = 2;
 }

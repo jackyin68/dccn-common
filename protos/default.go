@@ -5,9 +5,10 @@ const (
 	MQDeployTask          = "topic.deploy.task"
 	MQFeedbackTask        = "topic.feedback.task"
 	MQMail                = "topic.mail.handler"
-	AccessTokenValidTime  = 15      // 15 minutes
+	AccessTokenValidTime  = 2 * 60  // two hours
 	RefreshTokenValidTime = 72 * 60 // 72 hours
 	CleanupInterval       = 20      // minute
+	ActivateCodeValidTime = 7 * 24 * 60
 )
 
 // To do: Remove this line when usr mgr is ready

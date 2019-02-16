@@ -15,14 +15,14 @@ service UserMgr {
     // Logout need verify permission
     rpc Logout(LogoutRequest) returns (common.proto.Error) {
     }
-    // AskResetPassword, reset password
-    rpc AskResetPassword(AskResetPasswordRequest) returns (common.proto.Error) {
+    // ForgetPassword, reset password
+    rpc ForgetPassword(AskResetPasswordRequest) returns (common.proto.Error) {
     }
-    // ResetPassword, reset password
-    rpc ResetPassword(ResetPasswordRequest) returns (common.proto.Error) {
+    // ConfirmPassword, reset password
+    rpc ConfirmPassword(ResetPasswordRequest) returns (common.proto.Error) {
     }
-    // Active, active user with identifying code to finish register
-    rpc Activate(ActivateRequest) returns (common.proto.Error) {
+    // ConfirmRegistration, active user with identifying code to finish register
+    rpc ConfirmRegistration(ActivateRequest) returns (common.proto.Error) {
     }
     // Auth  validates user
     rpc NewToken(User) returns (NewTokenResponse) {
@@ -43,20 +43,22 @@ message User {
     string id = 1;
     // name should be unique
     string name = 2;
-    // nickname show on UI
-    string nickname = 4;
     // email user's email, unique.
-    string email = 5;
+    string email = 3;
     // password string
-    string password = 6;
+    string password = 4;
     // balance user's balance in account
-    int32 balance = 7;
+    int32 balance = 5;
     // is_deleted user's status
-    bool is_deleted = 8;
+    bool is_deleted = 6;
     // token jwt token string
-    string token = 9;
+    string token = 7;
+    // block chains public keys
+    repeated string public_keys = 8;
     // is_activation register if confirmed
-    bool is_activation = 10;
+    bool is_activation = 9;
+    // user create date
+    uint64 creation_date = 10;
 }
 
 message LoginRequest {
@@ -66,7 +68,7 @@ message LoginRequest {
 
 message LoginResponse {
     string token = 1;
-    string user_id = 2;
+    User user = 2;
     common.proto.Error error = 3;
 }
 

@@ -24,6 +24,18 @@ service UserMgr {
     // ConfirmRegistration, active user with identifying code to finish register
     rpc ConfirmRegistration(ActivateRequest) returns (common.proto.Error) {
     }
+    // UpdateAttributes update attributes, just user name temporary
+    rpc UpdateAttributes(UpdateAttributesRequest) returns (common.proto.Error) {
+    }
+    // ChangePassword change password
+    rpc ChangePassword(ChangePasswordRequest) returns (common.proto.Error) {
+    }
+    // ChangeEmail change email
+    rpc ChangeEmail(ChangeEmailRequest) returns (common.proto.Error) {
+    }
+    // VerifyEmail verify email
+    rpc VerifyEmail(VerifyEmailRequest) returns (common.proto.Error) {
+    }
     // Auth  validates user
     rpc NewToken(User) returns (NewTokenResponse) {
     }
@@ -36,6 +48,22 @@ service UserMgr {
     // RefreshToken reset token last access token
     rpc RefreshToken(Token) returns (common.proto.Error) {
     }
+}
+
+message UpdateAttributesRequest {
+    string user_name = 1;
+}
+
+message ChangePasswordRequest {
+    string old_password = 1;
+}
+
+message ChangeEmailRequest {
+    string new_email = 1;
+}
+
+message VerifyEmailRequest {
+    string new_email = 1;
 }
 
 message User {

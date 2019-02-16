@@ -16,9 +16,9 @@ It has these top-level messages:
 	LoginRequest
 	LoginResponse
 	LogoutRequest
-	AskResetPasswordRequest
-	ResetPasswordRequest
-	ActivateRequest
+	ForgetPasswordRequest
+	ConfirmPasswordRequest
+	ConfirmRegistrationRequest
 	Token
 	NewTokenResponse
 */
@@ -62,11 +62,11 @@ type UserMgrService interface {
 	// Logout need verify permission
 	Logout(ctx context.Context, in *LogoutRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// ForgetPassword, reset password
-	ForgetPassword(ctx context.Context, in *AskResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	ForgetPassword(ctx context.Context, in *ForgetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// ConfirmPassword, reset password
-	ConfirmPassword(ctx context.Context, in *ResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	ConfirmPassword(ctx context.Context, in *ConfirmPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// ConfirmRegistration, active user with identifying code to finish register
-	ConfirmRegistration(ctx context.Context, in *ActivateRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	ConfirmRegistration(ctx context.Context, in *ConfirmRegistrationRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// UpdateAttributes update attributes, just user name temporary
 	UpdateAttributes(ctx context.Context, in *UpdateAttributesRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// ChangePassword change password
@@ -133,7 +133,7 @@ func (c *userMgrService) Logout(ctx context.Context, in *LogoutRequest, opts ...
 	return out, nil
 }
 
-func (c *userMgrService) ForgetPassword(ctx context.Context, in *AskResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+func (c *userMgrService) ForgetPassword(ctx context.Context, in *ForgetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
 	req := c.c.NewRequest(c.name, "UserMgr.ForgetPassword", in)
 	out := new(common_proto.Error)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -143,7 +143,7 @@ func (c *userMgrService) ForgetPassword(ctx context.Context, in *AskResetPasswor
 	return out, nil
 }
 
-func (c *userMgrService) ConfirmPassword(ctx context.Context, in *ResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+func (c *userMgrService) ConfirmPassword(ctx context.Context, in *ConfirmPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
 	req := c.c.NewRequest(c.name, "UserMgr.ConfirmPassword", in)
 	out := new(common_proto.Error)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -153,7 +153,7 @@ func (c *userMgrService) ConfirmPassword(ctx context.Context, in *ResetPasswordR
 	return out, nil
 }
 
-func (c *userMgrService) ConfirmRegistration(ctx context.Context, in *ActivateRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+func (c *userMgrService) ConfirmRegistration(ctx context.Context, in *ConfirmRegistrationRequest, opts ...client.CallOption) (*common_proto.Error, error) {
 	req := c.c.NewRequest(c.name, "UserMgr.ConfirmRegistration", in)
 	out := new(common_proto.Error)
 	err := c.c.Call(ctx, req, out, opts...)
@@ -253,11 +253,11 @@ type UserMgrHandler interface {
 	// Logout need verify permission
 	Logout(context.Context, *LogoutRequest, *common_proto.Error) error
 	// ForgetPassword, reset password
-	ForgetPassword(context.Context, *AskResetPasswordRequest, *common_proto.Error) error
+	ForgetPassword(context.Context, *ForgetPasswordRequest, *common_proto.Error) error
 	// ConfirmPassword, reset password
-	ConfirmPassword(context.Context, *ResetPasswordRequest, *common_proto.Error) error
+	ConfirmPassword(context.Context, *ConfirmPasswordRequest, *common_proto.Error) error
 	// ConfirmRegistration, active user with identifying code to finish register
-	ConfirmRegistration(context.Context, *ActivateRequest, *common_proto.Error) error
+	ConfirmRegistration(context.Context, *ConfirmRegistrationRequest, *common_proto.Error) error
 	// UpdateAttributes update attributes, just user name temporary
 	UpdateAttributes(context.Context, *UpdateAttributesRequest, *common_proto.Error) error
 	// ChangePassword change password
@@ -281,9 +281,9 @@ func RegisterUserMgrHandler(s server.Server, hdlr UserMgrHandler, opts ...server
 		Register(ctx context.Context, in *User, out *common_proto.Error) error
 		Login(ctx context.Context, in *LoginRequest, out *LoginResponse) error
 		Logout(ctx context.Context, in *LogoutRequest, out *common_proto.Error) error
-		ForgetPassword(ctx context.Context, in *AskResetPasswordRequest, out *common_proto.Error) error
-		ConfirmPassword(ctx context.Context, in *ResetPasswordRequest, out *common_proto.Error) error
-		ConfirmRegistration(ctx context.Context, in *ActivateRequest, out *common_proto.Error) error
+		ForgetPassword(ctx context.Context, in *ForgetPasswordRequest, out *common_proto.Error) error
+		ConfirmPassword(ctx context.Context, in *ConfirmPasswordRequest, out *common_proto.Error) error
+		ConfirmRegistration(ctx context.Context, in *ConfirmRegistrationRequest, out *common_proto.Error) error
 		UpdateAttributes(ctx context.Context, in *UpdateAttributesRequest, out *common_proto.Error) error
 		ChangePassword(ctx context.Context, in *ChangePasswordRequest, out *common_proto.Error) error
 		ChangeEmail(ctx context.Context, in *ChangeEmailRequest, out *common_proto.Error) error
@@ -316,15 +316,15 @@ func (h *userMgrHandler) Logout(ctx context.Context, in *LogoutRequest, out *com
 	return h.UserMgrHandler.Logout(ctx, in, out)
 }
 
-func (h *userMgrHandler) ForgetPassword(ctx context.Context, in *AskResetPasswordRequest, out *common_proto.Error) error {
+func (h *userMgrHandler) ForgetPassword(ctx context.Context, in *ForgetPasswordRequest, out *common_proto.Error) error {
 	return h.UserMgrHandler.ForgetPassword(ctx, in, out)
 }
 
-func (h *userMgrHandler) ConfirmPassword(ctx context.Context, in *ResetPasswordRequest, out *common_proto.Error) error {
+func (h *userMgrHandler) ConfirmPassword(ctx context.Context, in *ConfirmPasswordRequest, out *common_proto.Error) error {
 	return h.UserMgrHandler.ConfirmPassword(ctx, in, out)
 }
 
-func (h *userMgrHandler) ConfirmRegistration(ctx context.Context, in *ActivateRequest, out *common_proto.Error) error {
+func (h *userMgrHandler) ConfirmRegistration(ctx context.Context, in *ConfirmRegistrationRequest, out *common_proto.Error) error {
 	return h.UserMgrHandler.ConfirmRegistration(ctx, in, out)
 }
 

@@ -16,13 +16,13 @@ service UserMgr {
     rpc Logout(LogoutRequest) returns (common.proto.Error) {
     }
     // ForgetPassword, reset password
-    rpc ForgetPassword(AskResetPasswordRequest) returns (common.proto.Error) {
+    rpc ForgetPassword(ForgetPasswordRequest) returns (common.proto.Error) {
     }
     // ConfirmPassword, reset password
-    rpc ConfirmPassword(ResetPasswordRequest) returns (common.proto.Error) {
+    rpc ConfirmPassword(ConfirmPasswordRequest) returns (common.proto.Error) {
     }
     // ConfirmRegistration, active user with identifying code to finish register
-    rpc ConfirmRegistration(ActivateRequest) returns (common.proto.Error) {
+    rpc ConfirmRegistration(ConfirmRegistrationRequest) returns (common.proto.Error) {
     }
     // UpdateAttributes update attributes, just user name temporary
     rpc UpdateAttributes(UpdateAttributesRequest) returns (common.proto.Error) {
@@ -48,22 +48,6 @@ service UserMgr {
     // RefreshToken reset token last access token
     rpc RefreshToken(Token) returns (common.proto.Error) {
     }
-}
-
-message UpdateAttributesRequest {
-    string user_name = 1;
-}
-
-message ChangePasswordRequest {
-    string old_password = 1;
-}
-
-message ChangeEmailRequest {
-    string new_email = 1;
-}
-
-message VerifyEmailRequest {
-    string new_email = 1;
 }
 
 message User {
@@ -104,19 +88,37 @@ message LogoutRequest {
     string user_id = 1;
 }
 
-message AskResetPasswordRequest{
+message ForgetPasswordRequest {
     string email = 1;
 }
 
-message ResetPasswordRequest{
+message ConfirmPasswordRequest {
     string email = 1;
-    string password = 2;
-    string token = 3;
+    string new_password = 2;
+    string verification_code = 3;
 }
 
-message ActivateRequest{
-    string token = 1;
+message ConfirmRegistrationRequest {
+    string email = 1;
+    string verification_code = 2;
 }
+
+message UpdateAttributesRequest {
+    string user_name = 1;
+}
+
+message ChangePasswordRequest {
+    string old_password = 1;
+}
+
+message ChangeEmailRequest {
+    string new_email = 1;
+}
+
+message VerifyEmailRequest {
+    string new_email = 1;
+}
+
 
 message Token {
     string token = 1;

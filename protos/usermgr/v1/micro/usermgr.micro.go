@@ -8,6 +8,10 @@ It is generated from these files:
 	usermgr/v1/micro/usermgr.proto
 
 It has these top-level messages:
+	UpdateAttributesRequest
+	ChangePasswordRequest
+	ChangeEmailRequest
+	VerifyEmailRequest
 	User
 	LoginRequest
 	LoginResponse
@@ -63,6 +67,14 @@ type UserMgrService interface {
 	ConfirmPassword(ctx context.Context, in *ResetPasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// ConfirmRegistration, active user with identifying code to finish register
 	ConfirmRegistration(ctx context.Context, in *ActivateRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// UpdateAttributes update attributes, just user name temporary
+	UpdateAttributes(ctx context.Context, in *UpdateAttributesRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// ChangePassword change password
+	ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// ChangeEmail change email
+	ChangeEmail(ctx context.Context, in *ChangeEmailRequest, opts ...client.CallOption) (*common_proto.Error, error)
+	// VerifyEmail verify email
+	VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...client.CallOption) (*common_proto.Error, error)
 	// Auth  validates user
 	NewToken(ctx context.Context, in *User, opts ...client.CallOption) (*NewTokenResponse, error)
 	// VerifyToken validated token
@@ -151,6 +163,46 @@ func (c *userMgrService) ConfirmRegistration(ctx context.Context, in *ActivateRe
 	return out, nil
 }
 
+func (c *userMgrService) UpdateAttributes(ctx context.Context, in *UpdateAttributesRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.UpdateAttributes", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMgrService) ChangePassword(ctx context.Context, in *ChangePasswordRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.ChangePassword", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMgrService) ChangeEmail(ctx context.Context, in *ChangeEmailRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.ChangeEmail", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userMgrService) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, opts ...client.CallOption) (*common_proto.Error, error) {
+	req := c.c.NewRequest(c.name, "UserMgr.VerifyEmail", in)
+	out := new(common_proto.Error)
+	err := c.c.Call(ctx, req, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *userMgrService) NewToken(ctx context.Context, in *User, opts ...client.CallOption) (*NewTokenResponse, error) {
 	req := c.c.NewRequest(c.name, "UserMgr.NewToken", in)
 	out := new(NewTokenResponse)
@@ -206,6 +258,14 @@ type UserMgrHandler interface {
 	ConfirmPassword(context.Context, *ResetPasswordRequest, *common_proto.Error) error
 	// ConfirmRegistration, active user with identifying code to finish register
 	ConfirmRegistration(context.Context, *ActivateRequest, *common_proto.Error) error
+	// UpdateAttributes update attributes, just user name temporary
+	UpdateAttributes(context.Context, *UpdateAttributesRequest, *common_proto.Error) error
+	// ChangePassword change password
+	ChangePassword(context.Context, *ChangePasswordRequest, *common_proto.Error) error
+	// ChangeEmail change email
+	ChangeEmail(context.Context, *ChangeEmailRequest, *common_proto.Error) error
+	// VerifyEmail verify email
+	VerifyEmail(context.Context, *VerifyEmailRequest, *common_proto.Error) error
 	// Auth  validates user
 	NewToken(context.Context, *User, *NewTokenResponse) error
 	// VerifyToken validated token
@@ -224,6 +284,10 @@ func RegisterUserMgrHandler(s server.Server, hdlr UserMgrHandler, opts ...server
 		ForgetPassword(ctx context.Context, in *AskResetPasswordRequest, out *common_proto.Error) error
 		ConfirmPassword(ctx context.Context, in *ResetPasswordRequest, out *common_proto.Error) error
 		ConfirmRegistration(ctx context.Context, in *ActivateRequest, out *common_proto.Error) error
+		UpdateAttributes(ctx context.Context, in *UpdateAttributesRequest, out *common_proto.Error) error
+		ChangePassword(ctx context.Context, in *ChangePasswordRequest, out *common_proto.Error) error
+		ChangeEmail(ctx context.Context, in *ChangeEmailRequest, out *common_proto.Error) error
+		VerifyEmail(ctx context.Context, in *VerifyEmailRequest, out *common_proto.Error) error
 		NewToken(ctx context.Context, in *User, out *NewTokenResponse) error
 		VerifyToken(ctx context.Context, in *Token, out *common_proto.Error) error
 		VerifyAndRefreshToken(ctx context.Context, in *Token, out *common_proto.Error) error
@@ -262,6 +326,22 @@ func (h *userMgrHandler) ConfirmPassword(ctx context.Context, in *ResetPasswordR
 
 func (h *userMgrHandler) ConfirmRegistration(ctx context.Context, in *ActivateRequest, out *common_proto.Error) error {
 	return h.UserMgrHandler.ConfirmRegistration(ctx, in, out)
+}
+
+func (h *userMgrHandler) UpdateAttributes(ctx context.Context, in *UpdateAttributesRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.UpdateAttributes(ctx, in, out)
+}
+
+func (h *userMgrHandler) ChangePassword(ctx context.Context, in *ChangePasswordRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.ChangePassword(ctx, in, out)
+}
+
+func (h *userMgrHandler) ChangeEmail(ctx context.Context, in *ChangeEmailRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.ChangeEmail(ctx, in, out)
+}
+
+func (h *userMgrHandler) VerifyEmail(ctx context.Context, in *VerifyEmailRequest, out *common_proto.Error) error {
+	return h.UserMgrHandler.VerifyEmail(ctx, in, out)
 }
 
 func (h *userMgrHandler) NewToken(ctx context.Context, in *User, out *NewTokenResponse) error {

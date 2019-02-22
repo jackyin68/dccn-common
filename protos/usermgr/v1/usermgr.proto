@@ -37,6 +37,9 @@ service UserMgr {
     rpc ChangeEmail(ChangeEmailRequest) returns (common.proto.Empty) {
     }
 
+    rpc ConfirmEmail(ConfirmEmailRequest) returns (common.proto.Empty) {
+    }
+
     rpc VerifyAccessToken(common.proto.Empty) returns (common.proto.Empty){
     }
 }
@@ -124,6 +127,12 @@ message ChangePasswordRequest {
 
 message ChangeEmailRequest {
     string new_email = 1;
+    string confirmation_code = 2;
+}
+
+message ConfirmEmailRequest {
+    string new_email = 1;
+    string confirmation_code = 2;
 }
 
 message UpdateAttributesRequest {

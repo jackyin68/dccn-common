@@ -127,7 +127,6 @@ message ChangePasswordRequest {
 
 message ChangeEmailRequest {
     string new_email = 1;
-    string confirmation_code = 2;
 }
 
 message ConfirmEmailRequest {

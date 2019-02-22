@@ -25,6 +25,7 @@ var (
 	ErrEmailSame                 = errors.New("email must be not same as before")
 	ErrPasswordFormat            = errors.New("password invalid format")
 	ErrUserNameFormat            = errors.New("user name invalid format")
+	ErrUnexpectedChar            = errors.New("unexpected char")
 	ErrPasswordLength            = errors.New("password must be at least 6 characters long")
 	ErrCronJobScheduleFormat     = errors.New("cronjob schedule invalid format")
 	ErrPassword                  = errors.New("invalid password")
